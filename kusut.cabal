@@ -1,0 +1,19 @@
+name: kusut
+version: 0.0.0.0
+synopsis: kusut's wwebsite
+description: kusut's wwebsite as on the internet
+homepage: http://kusut.web.id
+license: BSD3
+author: kusut
+maintainer: kusut
+copyright: 2011 kusut
+build-type: Simple
+cabal-version: >=1.8
+
+executable kusut
+  hs-source-dirs: src
+  main-is: kusut.hs
+  ghc-options: -rtsopts -threaded -Wall
+  build-depends: base >= 4.5.0.0
+               , hakyll >= 4.4.3.2
+               , highlighting-kate >= 0.5.6.1
