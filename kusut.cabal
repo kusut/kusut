@@ -15,5 +15,7 @@ executable kusut
   main-is: kusut.hs
   ghc-options: -rtsopts -threaded -Wall
   build-depends: base >= 4.5.0.0
+               , clay >= 0.8.0.1
                , hakyll >= 4.4.3.2
                , highlighting-kate >= 0.5.6.1
+               , text

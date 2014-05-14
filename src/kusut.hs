@@ -13,13 +13,13 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "static/css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
-
     create ["static/css/zenburn.css"] $ do
         route   idRoute
         compile $ makeItem (compressCss . styleToCss $ zenburn)
+
+    match "src/Css.hs" $ do
+        route $ gsubRoute "src/Css" (const "static/css/default") `composeRoutes` setExtension "css"
+        compile $ getResourceString >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
 
     match "posts/*" $ do
         route $ setExtension "html"
