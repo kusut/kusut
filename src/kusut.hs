@@ -24,23 +24,40 @@ main = hakyll $ do
     match "posts/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
+            >>= saveSnapshot "writings"
             >>= loadAndApplyTemplate "templates/post.html" defaultContext
             >>= loadAndApplyTemplate "templates/base.html" defaultContext
             >>= relativizeUrls
 
     match "index.html" $ do
-         route idRoute
-         compile $ do
-             posts <- recentFirst =<< loadAll "posts/*"
-             let indexContext =
-                    listField "posts" defaultContext (return posts)
-                    <> constField "title" "Home"
-                    <> defaultContext
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll "posts/*"
+            let indexContext = listField "posts" defaultContext (return posts)
+                             <> constField "title" "Home"
+                             <> defaultContext
 
-             getResourceBody
-                 >>= applyAsTemplate indexContext
-                 >>= loadAndApplyTemplate "templates/base.html" indexContext
-                 >>= relativizeUrls
+            getResourceBody
+                >>= applyAsTemplate indexContext
+                >>= loadAndApplyTemplate "templates/base.html" indexContext
+                >>= relativizeUrls
+
+    create ["atom.xml"] $ do
+        route idRoute
+        compile $ do
+            loadAllSnapshots "posts/*" "writings"
+                >>= fmap (take 10) . recentFirst
+                >>= renderAtom (feedConfiguration "All posts") ( defaultContext <> bodyField "description")
 
     match "templates/*" $ compile templateCompiler
+
+
+feedConfiguration :: String -> FeedConfiguration
+feedConfiguration title = FeedConfiguration
+    { feedTitle = "kusut :: " ++ title
+    , feedDescription = "kusut"
+    , feedAuthorName = "kusut"
+    , feedAuthorEmail = "tinokusut@gmail.com"
+    , feedRoot = "http://kusut.web.id"
+    }
 
