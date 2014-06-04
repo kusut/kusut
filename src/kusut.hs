@@ -4,7 +4,18 @@ module Main where
 import           Data.Monoid            ((<>))
 import           Hakyll
 import           Text.Highlighting.Kate (styleToCss, zenburn)
+import           Text.Pandoc.Options
 -------------------------------------------------------------------------------
+
+s5Options :: WriterOptions
+s5Options = defaultHakyllWriterOptions
+    { writerSlideVariant = S5Slides
+    , writerHighlight = True
+    , writerHighlightStyle = zenburn
+    -- , writerStandalone = True
+    -- , writerTemplate = "$body$"
+    -- , writerUserDataDir = "????"
+    }
 
 main :: IO ()
 main = hakyll $ do
@@ -27,6 +38,11 @@ main = hakyll $ do
             >>= saveSnapshot "writings"
             >>= loadAndApplyTemplate "templates/post.html" defaultContext
             >>= loadAndApplyTemplate "templates/base.html" defaultContext
+            >>= relativizeUrls
+
+    match "slides/*" $ do
+        route $ setExtension "html"
+        compile $ pandocCompilerWith defaultHakyllReaderOptions s5Options
             >>= relativizeUrls
 
     match "index.html" $ do
