@@ -1,71 +1,77 @@
 -------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
+import           Control.Monad          (liftM)
 import           Data.Monoid            ((<>))
 import           Hakyll
 import           Text.Highlighting.Kate (styleToCss, zenburn)
 import           Text.Pandoc.Options
+import           Text.Pandoc.Templates  (getDefaultTemplate)
 -------------------------------------------------------------------------------
 
-s5Options :: WriterOptions
-s5Options = defaultHakyllWriterOptions
-    { writerSlideVariant = S5Slides
-    , writerHighlight = True
-    , writerHighlightStyle = zenburn
-    -- , writerStandalone = True
-    -- , writerTemplate = "$body$"
-    -- , writerUserDataDir = "????"
-    }
+s5DefaultTemplate :: IO String
+s5DefaultTemplate  = liftM (either (const "") id) . getDefaultTemplate Nothing $ "s5"
 
 main :: IO ()
-main = hakyll $ do
+main = do
 
-    match "static/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+    template <- s5DefaultTemplate
+    let s5Options = defaultHakyllWriterOptions
+                      { writerSlideVariant = S5Slides
+                      , writerHighlight = True
+                      , writerHighlightStyle = zenburn
+                      , writerStandalone = True
+                      , writerVariables = [("s5-url", "/static/s5"),("author-meta", "kusut")]
+                      , writerTemplate = template
+                      }
 
-    create ["static/css/zenburn.css"] $ do
-        route   idRoute
-        compile $ makeItem (compressCss . styleToCss $ zenburn)
+    hakyll $ do
 
-    match "src/Css.hs" $ do
-        route $ gsubRoute "src/Css" (const "static/css/default") `composeRoutes` setExtension "css"
-        compile $ getResourceString >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
+        match "static/s5/**" $ do
+            route   idRoute
+            compile copyFileCompiler
 
-    match "posts/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompiler
-            >>= saveSnapshot "writings"
-            >>= loadAndApplyTemplate "templates/post.html" defaultContext
-            >>= loadAndApplyTemplate "templates/base.html" defaultContext
-            >>= relativizeUrls
+        create ["static/css/zenburn.css"] $ do
+            route   idRoute
+            compile $ makeItem (compressCss . styleToCss $ zenburn)
 
-    match "slides/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompilerWith defaultHakyllReaderOptions s5Options
-            >>= relativizeUrls
+        match "src/Css.hs" $ do
+            route $ gsubRoute "src/Css" (const "static/css/default") `composeRoutes` setExtension "css"
+            compile $ getResourceString >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
 
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let indexContext = listField "posts" defaultContext (return posts)
-                             <> constField "title" "Home"
-                             <> defaultContext
-
-            getResourceBody
-                >>= applyAsTemplate indexContext
-                >>= loadAndApplyTemplate "templates/base.html" indexContext
+        match "posts/*" $ do
+            route $ setExtension "html"
+            compile $ pandocCompiler
+                >>= saveSnapshot "writings"
+                >>= loadAndApplyTemplate "templates/post.html" defaultContext
+                >>= loadAndApplyTemplate "templates/base.html" defaultContext
                 >>= relativizeUrls
 
-    create ["atom.xml"] $ do
-        route idRoute
-        compile $ do
-            loadAllSnapshots "posts/*" "writings"
-                >>= fmap (take 10) . recentFirst
-                >>= renderAtom (feedConfiguration "All posts") ( defaultContext <> bodyField "description")
+        match "slides/*" $ do
+            route $ setExtension "html"
+            compile $ pandocCompilerWith defaultHakyllReaderOptions s5Options >>= relativizeUrls
 
-    match "templates/*" $ compile templateCompiler
+        match "index.html" $ do
+            route idRoute
+            compile $ do
+                posts <- recentFirst =<< loadAll "posts/*"
+                let indexContext = listField "posts" defaultContext (return posts)
+                                 <> constField "title" "Home"
+                                 <> defaultContext
+
+                getResourceBody
+                    >>= applyAsTemplate indexContext
+                    >>= loadAndApplyTemplate "templates/base.html" indexContext
+                    >>= relativizeUrls
+
+        create ["atom.xml"] $ do
+            route idRoute
+            compile $ do
+                loadAllSnapshots "posts/*" "writings"
+                    >>= fmap (take 10) . recentFirst
+                    >>= renderAtom (feedConfiguration "All posts") ( defaultContext <> bodyField "description")
+
+        match "templates/*" $ compile templateCompiler
 
 
 feedConfiguration :: String -> FeedConfiguration
