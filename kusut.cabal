@@ -12,7 +12,7 @@ cabal-version: >=1.8
 
 executable kusut
   hs-source-dirs: src
-  main-is: kusut.hs
+  main-is: Kusut.hs
   ghc-options: -rtsopts -threaded -Wall
   build-depends: base >= 4.7.0.0
                , clay >= 0.8.0.1
