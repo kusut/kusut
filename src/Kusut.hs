@@ -4,7 +4,6 @@ module Main where
 import           Control.Monad          (liftM)
 import           Data.Monoid            ((<>))
 import           Hakyll
-import           Text.Highlighting.Kate (styleToCss, zenburn)
 import           Text.Pandoc.Options
 import           Text.Pandoc.Templates  (getDefaultTemplate)
 -------------------------------------------------------------------------------
@@ -18,10 +17,11 @@ main = do
     template <- s5DefaultTemplate
     let s5Options = defaultHakyllWriterOptions
                       { writerSlideVariant = S5Slides
-                      , writerHighlight = True
-                      , writerHighlightStyle = zenburn
                       , writerStandalone = True
-                      , writerVariables = [("s5-url", "/static/s5"),("author-meta", "kusut")]
+                      , writerVariables = [ ("s5-url", "/static/s5")
+                                          , ("css", "/static/css/default.css")
+                                          , ("author-meta", "kusut")
+                                          ]
                       , writerTemplate = template
                       }
 
@@ -30,10 +30,6 @@ main = do
         match "static/s5/**" $ do
             route   idRoute
             compile copyFileCompiler
-
-        create ["static/css/zenburn.css"] $ do
-            route   idRoute
-            compile $ makeItem (compressCss . styleToCss $ zenburn)
 
         match "src/Css.hs" $ do
             route $ gsubRoute "src/Css" (const "static/css/default") `composeRoutes` setExtension "css"
