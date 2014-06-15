@@ -47,6 +47,10 @@ main = do
                 >>= loadAndApplyTemplate "templates/base.html" defaultContext
                 >>= relativizeUrls
 
+        match ("slides/s5/*" .&&. complement "slides/s5/pretty.css") $ do
+            route $ gsubRoute "slides/s5" (const "static/s5")
+            compile $ copyFileCompiler
+
         match "slides/*" $ do
             route $ setExtension "html"
             compile $ pandocCompilerWith defaultHakyllReaderOptions s5Options >>= relativizeUrls
