@@ -4,3 +4,4 @@ _site/
 cabal.sandbox.config
 cabal.config
 dist/
+slides/s5/
