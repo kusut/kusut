@@ -4,14 +4,14 @@ import qualified Data.Text.Lazy.IO as Text
 import           Prelude           hiding (div)
 
 header_ :: Css
-header_ = div # "#header" ? do
+header_ = body |> div # "#header" ? do
     textAlign (alignSide sideRight)
     borderBottom solid (px 2) "#6f6f6f"
     marginBottom (px 30)
     padding 12 0 12 0
 
 footer_ :: Css
-footer_ = div # "#footer" ? do
+footer_ = body |> div # "#footer" ? do
     textAlign (alignSide sideCenter)
     borderTop solid (px 2) "#6f6f6f"
     marginTop (px 30)
