@@ -51,6 +51,7 @@ zenburn = do
        color "#f0dfaf"
        fontWeight bold
     code # ".haskell" |> "span.dt" ? color "#7CB8BB"
+    code # ".haskell" |> "span.fu" ? color "#DFAF8F"
     code |> "span.dt" ? fontWeight bold
     code |> "span.dv" ? color "#dcdccc"
     code |> "span.bn" ? color "#dca3a3"
