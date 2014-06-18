@@ -22,6 +22,9 @@ global = do
     a ? color "#9fafaf"
     a # visited ? color "#8f8f8f"
 
+    div # ".slide" |> pre ?
+       borderWidth (px 0)
+
     pre ? do
         sym padding (px 10)
         border solid (px 1) "#6f6f6f"
