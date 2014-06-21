@@ -70,5 +70,4 @@ zenburn = do
 
 
 main :: IO ()
-main = Text.putStr $ renderWith compact $ global >> header_ >> footer_ >> compiled >> zenburn
-
+main = Text.putStr $ renderWith compact [] $ global >> header_ >> footer_ >> compiled >> zenburn
