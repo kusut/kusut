@@ -1,6 +1,6 @@
 name: kusut
 version: 0.0.0.0
-synopsis: kusut's wwebsite
+synopsis: kusut's HTML
 description: kusut's wwebsite as on the internet
 homepage: http://kusut.web.id
 license: BSD3
@@ -10,9 +10,9 @@ copyright: 2011 kusut
 build-type: Simple
 cabal-version: >=1.8
 
-executable kusut
+executable site
   hs-source-dirs: src
-  main-is: Kusut.hs
+  main-is: Site.hs
   ghc-options: -rtsopts -threaded -Wall
   build-depends: base >= 4.7.0.0
                , clay >= 0.9.0.1
