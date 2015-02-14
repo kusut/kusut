@@ -15,6 +15,6 @@ executable site
   main-is: Site.hs
   ghc-options: -rtsopts -threaded -Wall
   build-depends: base >= 4.7.0.0
-               , clay >= 0.9.0.1
+               , clay >= 0.10.1
                , hakyll >= 4.5.3.0
                , pandoc >= 1.12.4.2

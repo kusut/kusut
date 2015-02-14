@@ -29,7 +29,6 @@ getS5option template = defaultHakyllWriterOptions
   , writerVariables = [ ("s5-url", "/static/s5")
                       , ("css", "/static/css/default.css")
                       , ("author-meta", "kusut")
-                      , ("highlighting-css", "")
                       ]
   , writerTemplate = template
   }

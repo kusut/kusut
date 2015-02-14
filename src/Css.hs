@@ -9,7 +9,6 @@ header_ = body |> div # "#header" ? do
   textAlign (alignSide sideRight)
   borderBottom solid (px 2) "#6f6f6f"
   marginBottom (px 30)
-  padding 12 0 12 0
 
 
 footer_ :: Css
@@ -17,7 +16,7 @@ footer_ = body |> div # "#footer" ? do
   textAlign (alignSide sideCenter)
   borderTop solid (px 2) "#6f6f6f"
   marginTop (px 30)
-  padding 12 0 12 0
+  sym padding (px 10)
 
 
 global :: Css
@@ -52,22 +51,21 @@ compiled = div # ".pandoc" ? do
 
 s5 :: Css
 s5 = div # ".presentation" ? do
-
-  fontSize (em 2.25)
+  fontSize (em 1.6)
   h1 ? (textAlign $ alignSide sideCenter)
             
   div # ".slide" |> pre ? do
     sym padding (px 0)
     borderWidth (px 0)
+    verticalAlign middle
 
   div # "#currentSlide" ? display none
 
   div # "#slide0" ? do
-    h1 ? do
-      fontSize (em 4)
+    textAlign $ alignSide sideCenter
 
 
-
+zenburn :: Css
 zenburn = do
   code |> "span.kw" ? do
     color "#f0dfaf"
