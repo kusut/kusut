@@ -25,10 +25,6 @@ global = do
   a ? color "#9fafaf"
   a # visited ? color "#8f8f8f"
 
-  div # ".slide" |> pre ? do
-    sym padding (px 0)
-    borderWidth (px 0)
-
   pre ? do
     sym padding (px 10)
     border solid (px 1) "#6f6f6f"
@@ -54,6 +50,24 @@ compiled = div # ".pandoc" ? do
   h2 ? fontSize (em 1.1)
 
 
+s5 :: Css
+s5 = div # ".presentation" ? do
+
+  fontSize (em 2.25)
+  h1 ? (textAlign $ alignSide sideCenter)
+            
+  div # ".slide" |> pre ? do
+    sym padding (px 0)
+    borderWidth (px 0)
+
+  div # "#currentSlide" ? display none
+
+  div # "#slide0" ? do
+    h1 ? do
+      fontSize (em 4)
+
+
+
 zenburn = do
   code |> "span.kw" ? do
     color "#f0dfaf"
@@ -77,5 +91,7 @@ zenburn = do
   code |> "span.er" ? color "#c3bf9f"
 
 
+
+      
 main :: IO ()
-main = Text.putStr $ renderWith compact [] $ global >> header_ >> footer_ >> compiled >> zenburn
+main = Text.putStr $ renderWith compact [] $ global >> header_ >> footer_ >> compiled >> zenburn >> s5
