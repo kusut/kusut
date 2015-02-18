@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Clay
 import qualified Data.Text.Lazy.IO as Text
+import           Data.Monoid       ((<>))
 import           Prelude           hiding (div)
 
 
@@ -24,12 +25,12 @@ global = do
   a ? color "#9fafaf"
   a # visited ? color "#8f8f8f"
 
-  pre ? do
+  ".pandoc" |> pre ? do
     sym padding (px 10)
     border solid (px 1) "#6f6f6f"
     overflow auto
 
-  div # ".info" ? do
+  ".info" ? do
     color "#8f8f8f"
     fontStyle italic
 
@@ -44,24 +45,23 @@ global = do
 
 
 compiled :: Css
-compiled = div # ".pandoc" ? do
+compiled = ".pandoc" ? do
   h1 ? fontSize (em 1.5)
   h2 ? fontSize (em 1.1)
 
 
+-- Overriding pretty.css for s5
 s5 :: Css
-s5 = div # ".presentation" ? do
-  fontSize (em 1.6)
-  h1 ? (textAlign $ alignSide sideCenter)
-            
-  div # ".slide" |> pre ? do
-    sym padding (px 0)
-    borderWidth (px 0)
-    verticalAlign middle
+s5 = ".presentation" ? do
+  fontSize (em 3)
 
-  div # "#currentSlide" ? display none
+  ".slide" ? do
+     h1 <> h2 ? (textAlign $ alignSide sideCenter)
 
-  div # "#slide0" ? do
+  "#currentSlide" ? display none
+
+  "#slide0" ? do
+    fontSize (em 1.4)
     textAlign $ alignSide sideCenter
 
 
