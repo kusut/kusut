@@ -3,6 +3,10 @@ tags: python, blogofile
 title: Hello World
 date: 2011-03-12
 ---
+
+**Update** : I chose to use fabric to manage this blog. Only compiled html files are deployed (build locally).
+**Update** : I switched to haskell.
+
 I finally decided to stop using wordpress and do static blogging instead. I chose `Blogofile <http://blogofile.com>`_ as my new blog engine because it's python, pretty active and has good docs.
 
 My Changes
@@ -42,4 +46,4 @@ I am still undecided on this issue. Here are my concerns:
 
 I tried mercurial hooks and it went well. I also installed python 2.7.1 and blogofile on the server, so the blog can be built there. I have a feeling that I will not decide on this matter for a long time and continue to use only ssh and scp. Nevertheless, I am going to put this on revision control even if I do not end up using its hooks for deployment.
 
-**Update** : I chose to use fabric to manage this blog. Only compiled html files are deployed (build locally).
+
