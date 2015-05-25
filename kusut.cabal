@@ -14,7 +14,7 @@ executable site
   hs-source-dirs: src
   main-is: Site.hs
   ghc-options: -rtsopts -threaded -Wall
-  build-depends: base >= 4.7.0.2
-               , clay >= 0.10.1
-               , hakyll >= 4.6.7.1
-               , pandoc >= 1.13.2
+  build-depends: base == 4.8.0.0
+               , clay == 0.10.1
+               , hakyll == 4.6.9.0
+               , pandoc == 1.13.2.1
