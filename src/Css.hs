@@ -25,7 +25,7 @@ global = do
   a ? color "#9fafaf"
   a # visited ? color "#8f8f8f"
 
-  ".pandoc" |> pre ? do
+  ".sourceCode" |> pre ? do
     sym padding (px 10)
     border solid (px 1) "#6f6f6f"
     overflow auto
