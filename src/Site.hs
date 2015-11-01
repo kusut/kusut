@@ -42,7 +42,7 @@ css :: Rules ()
 css = match "src/Css.hs" $ do
   route $ gsubRoute "src/Css" (const "static/css/default") `composeRoutes` setExtension "css"
   compile $ getResourceString
-    >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
+    >>= withItemBody (unixFilter "stack" ["runghc"])
 
 
 posts :: Rules ()
